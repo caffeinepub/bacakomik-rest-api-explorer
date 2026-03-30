@@ -26,9 +26,10 @@ export interface http_request_result {
     headers: Array<http_header>;
 }
 export interface backendInterface {
-    getChaptersByComic(categoryId: bigint, page: bigint): Promise<string>;
-    getComicBySlug(slug: string): Promise<string>;
-    getLatestChapters(page: bigint, perPage: bigint): Promise<string>;
-    searchComics(queryParam: string, page: bigint): Promise<string>;
+    getPopularComics(): Promise<string>;
+    getLatestComics(page: bigint): Promise<string>;
+    getColoredComics(page: bigint): Promise<string>;
+    getComicList(page: bigint): Promise<string>;
+    getGenreList(): Promise<string>;
     transform(input: TransformationInput): Promise<TransformationOutput>;
 }

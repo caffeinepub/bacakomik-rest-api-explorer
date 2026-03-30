@@ -1,38 +1,46 @@
 import OutCall "http-outcalls/outcall";
 import Text "mo:core/Text";
 
-actor {
+persistent actor {
+  // Migration: discard old stable baseUrl variable
+  stable var baseUrl : Text = "";
+
   public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
     OutCall.transform(input);
   };
 
-  let baseUrl = "https://bacakomik.my/wp-json/wp/v2/";
+  public shared ({ caller }) func getPopularComics() : async Text {
+    await OutCall.httpGetRequest("https://bacakomik.my/komik-populer/", [], transform);
+  };
 
-  public shared ({ caller }) func getLatestChapters(page : Nat, perPage : Nat) : async Text {
-    let url = baseUrl.concat(
-      "posts?_fields=id,title,slug,date,categories&page=",
-    ).concat(page.toText()).concat("&per_page=").concat(perPage.toText());
+  public shared ({ caller }) func getLatestComics(page : Nat) : async Text {
+    let url = if (page <= 1) {
+      "https://bacakomik.my/komik-terbaru/"
+    } else {
+      "https://bacakomik.my/komik-terbaru/page/".concat(page.toText()).concat("/")
+    };
     await OutCall.httpGetRequest(url, [], transform);
   };
 
-  public shared ({ caller }) func searchComics(queryParam : Text, page : Nat) : async Text {
-    let url = baseUrl.concat(
-      "categories?search=",
-    ).concat(queryParam).concat("&per_page=20&page=").concat(page.toText());
+  public shared ({ caller }) func getColoredComics(page : Nat) : async Text {
+    let url = if (page <= 1) {
+      "https://bacakomik.my/komik-berwarna/"
+    } else {
+      "https://bacakomik.my/komik-berwarna/page/".concat(page.toText()).concat("/")
+    };
     await OutCall.httpGetRequest(url, [], transform);
   };
 
-  public shared ({ caller }) func getComicBySlug(slug : Text) : async Text {
-    let url = baseUrl.concat(
-      "categories?slug=",
-    ).concat(slug);
+  public shared ({ caller }) func getComicList(page : Nat) : async Text {
+    let url = if (page <= 1) {
+      "https://bacakomik.my/daftar-komik/"
+    } else {
+      "https://bacakomik.my/daftar-komik/page/".concat(page.toText()).concat("/")
+    };
     await OutCall.httpGetRequest(url, [], transform);
   };
 
-  public shared ({ caller }) func getChaptersByComic(categoryId : Nat, page : Nat) : async Text {
-    let url = baseUrl.concat(
-      "posts?categories=",
-    ).concat(categoryId.toText()).concat("&per_page=20&page=").concat(page.toText()).concat("&_fields=id,title,slug,date");
-    await OutCall.httpGetRequest(url, [], transform);
+  public shared ({ caller }) func getGenreList() : async Text {
+    await OutCall.httpGetRequest("https://bacakomik.my/daftar-genre/", [], transform);
   };
 };

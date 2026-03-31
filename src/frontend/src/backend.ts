@@ -108,67 +108,82 @@ export interface http_request_result {
     headers: Array<http_header>;
 }
 export interface backendInterface {
-    getChaptersByComic(categoryId: bigint, page: bigint): Promise<string>;
-    getComicBySlug(slug: string): Promise<string>;
-    getLatestChapters(page: bigint, perPage: bigint): Promise<string>;
-    searchComics(queryParam: string, page: bigint): Promise<string>;
+    getPopularComics(): Promise<string>;
+    getLatestComics(page: bigint): Promise<string>;
+    getColoredComics(page: bigint): Promise<string>;
+    getComicList(page: bigint): Promise<string>;
+    getGenreList(): Promise<string>;
     transform(input: TransformationInput): Promise<TransformationOutput>;
 }
 export class Backend implements backendInterface {
     constructor(private actor: ActorSubclass<_SERVICE>, private _uploadFile: (file: ExternalBlob) => Promise<Uint8Array>, private _downloadFile: (file: Uint8Array) => Promise<ExternalBlob>, private processError?: (error: unknown) => never){}
-    async getChaptersByComic(arg0: bigint, arg1: bigint): Promise<string> {
+    async getPopularComics(): Promise<string> {
         if (this.processError) {
             try {
-                const result = await this.actor.getChaptersByComic(arg0, arg1);
+                const result = await this.actor.getPopularComics();
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getChaptersByComic(arg0, arg1);
+            const result = await this.actor.getPopularComics();
             return result;
         }
     }
-    async getComicBySlug(arg0: string): Promise<string> {
+    async getLatestComics(arg0: bigint): Promise<string> {
         if (this.processError) {
             try {
-                const result = await this.actor.getComicBySlug(arg0);
+                const result = await this.actor.getLatestComics(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getComicBySlug(arg0);
+            const result = await this.actor.getLatestComics(arg0);
             return result;
         }
     }
-    async getLatestChapters(arg0: bigint, arg1: bigint): Promise<string> {
+    async getColoredComics(arg0: bigint): Promise<string> {
         if (this.processError) {
             try {
-                const result = await this.actor.getLatestChapters(arg0, arg1);
+                const result = await this.actor.getColoredComics(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.getLatestChapters(arg0, arg1);
+            const result = await this.actor.getColoredComics(arg0);
             return result;
         }
     }
-    async searchComics(arg0: string, arg1: bigint): Promise<string> {
+    async getComicList(arg0: bigint): Promise<string> {
         if (this.processError) {
             try {
-                const result = await this.actor.searchComics(arg0, arg1);
+                const result = await this.actor.getComicList(arg0);
                 return result;
             } catch (e) {
                 this.processError(e);
                 throw new Error("unreachable");
             }
         } else {
-            const result = await this.actor.searchComics(arg0, arg1);
+            const result = await this.actor.getComicList(arg0);
+            return result;
+        }
+    }
+    async getGenreList(): Promise<string> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getGenreList();
+                return result;
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getGenreList();
             return result;
         }
     }

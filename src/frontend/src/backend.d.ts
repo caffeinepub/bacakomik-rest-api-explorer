@@ -26,10 +26,10 @@ export interface http_request_result {
     headers: Array<http_header>;
 }
 export interface backendInterface {
-    getPopularComics(): Promise<string>;
-    getLatestComics(page: bigint): Promise<string>;
     getColoredComics(page: bigint): Promise<string>;
     getComicList(page: bigint): Promise<string>;
     getGenreList(): Promise<string>;
+    getLatestComics(page: bigint): Promise<string>;
+    getPopularComics(): Promise<string>;
     transform(input: TransformationInput): Promise<TransformationOutput>;
 }

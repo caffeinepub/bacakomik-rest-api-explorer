@@ -1,10 +1,9 @@
+import Migration "migration";
 import OutCall "http-outcalls/outcall";
 import Text "mo:core/Text";
 
+(with migration = Migration.run)
 persistent actor {
-  // Migration: discard old stable baseUrl variable
-  stable var baseUrl : Text = "";
-
   public query func transform(input : OutCall.TransformationInput) : async OutCall.TransformationOutput {
     OutCall.transform(input);
   };

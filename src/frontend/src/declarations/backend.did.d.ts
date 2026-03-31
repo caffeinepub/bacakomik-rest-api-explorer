@@ -26,11 +26,11 @@ export interface http_request_result {
   'headers' : Array<http_header>,
 }
 export interface _SERVICE {
-  'getPopularComics' : ActorMethod<[], string>,
-  'getLatestComics' : ActorMethod<[bigint], string>,
   'getColoredComics' : ActorMethod<[bigint], string>,
   'getComicList' : ActorMethod<[bigint], string>,
   'getGenreList' : ActorMethod<[], string>,
+  'getLatestComics' : ActorMethod<[bigint], string>,
+  'getPopularComics' : ActorMethod<[], string>,
   'transform' : ActorMethod<[TransformationInput], TransformationOutput>,
 }
 export declare const idlService: IDL.ServiceClass;
